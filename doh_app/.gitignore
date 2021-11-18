@@ -1,0 +1,8 @@
+static/
+__pycache__/
+*.db
+Lib/
+Include/
+Scripts/
+share/
+*.cfg

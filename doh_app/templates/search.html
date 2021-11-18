@@ -1,0 +1,6 @@
+{% for rest in rests %}
+<div>
+    <a href="{{ url_for('details', camis=rest.camis)}}">{{ rest.dba }}</a>
+    <a href="{{ url_for('details', camis=rest.camis)}}">{{ rest.address }}</a>
+</div>
+{% endfor %}

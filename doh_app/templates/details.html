@@ -1,0 +1,72 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+    <h1>DOH Inspection Predictor thing report for {{ prior[0].dba }}</h1>
+    <div>
+        <canvas id="lineChart" width="1200" height="400"></canvas>
+    </div>
+
+
+    <div>
+        <h3>Prior violations for {{ prior[0].dba }}:</h3>
+        {% for inspection in priorDict %}
+        <div>
+            <ul>
+                <li>{{ inspection[:10] }}</li>
+                <ul>
+                {% for j in priorDict[inspection] %}
+                    <li>{{ j }}</li>
+                {% endfor %}
+                </ul>
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <div>
+        <canvas id="barChart" width="1200" height="400"></canvas>
+    </div>
+    <script>
+
+var ctx2 = document.getElementById("barChart").getContext('2d');
+var barChart = new Chart(ctx2, {
+    type: "bar",
+    data: {
+        labels: {{ barLabels | safe }},
+        datasets: [{
+            label: "Highest Percentage Occurring Violations",
+            data: {{ barValues | safe }},
+                }]
+        },
+        options: {
+            scales: {
+            x: {  
+                ticks: {
+                display: false
+                }
+            }
+            },
+            responsive: true
+        }
+    }); 
+    </script>
+    <script>
+        var ctx = document.getElementById("lineChart").getContext("2d");
+        var lineChart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: {{ labels | safe }},
+        datasets: [
+            {
+                label: "Probability of survival before a given date",
+                data: {{ values | safe }}
+                    }
+        ]
+            },
+        options: {
+            responsive: true
+        }
+        });
+    </script>
+</body>
