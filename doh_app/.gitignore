@@ -5,3 +5,4 @@ Include/
 Scripts/
 share/
 *.cfg
+*.db
