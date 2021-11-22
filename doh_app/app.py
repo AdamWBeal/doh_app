@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
 import pickle
@@ -53,9 +53,10 @@ def home():
 @app.route("/search/<query>")
 def search(query):
     result = db.session.query(Restaurants.dba, Restaurants.address, Restaurants.camis).filter(
-        Restaurants.small.like('%{}%'.format(query))).distinct().limit(40).all()
+        Restaurants.small.like('%{}%'.format(query))).distinct().limit(50).all()
     if len(result) == 0:
-        print('no results')
+        flash(f'No valid places with that search.  Try again.', 'failure')
+        return redirect(url_for('home'))
     return render_template('search.html', title='Search', rests=result)
 
 
