@@ -45,9 +45,7 @@ def home():
     if request.method == "POST":
         query = request.form['query']
         query = query.lower()
-        # query.replace('[^a-zA-Z0-9 ]', '', regex=True)
         query = re.sub('[^a-zA-Z0-9 ]', '', query)
-        print(query)
         return redirect(url_for('search', query=query))
     return render_template('index.html', title='Home')
 
@@ -56,6 +54,8 @@ def home():
 def search(query):
     result = db.session.query(Restaurants.dba, Restaurants.address, Restaurants.camis).filter(
         Restaurants.small.like('%{}%'.format(query))).distinct().limit(40).all()
+    if len(result) == 0:
+        print('no results')
     return render_template('search.html', title='Search', rests=result)
 
 
@@ -131,13 +131,43 @@ def details(camis):
 
     model = model.set_index('days')
 
+    values = list(model.iloc[:, 0])
+    values = [100*x for x in values]
+
+
     labels = list(model.index.astype(str))
     labels = [x[:10] for x in labels]
-    values = list(model.iloc[:, 0])
+
+    # prevValue = 1.0
+    # count = 0
+    # for i in range(len(values)):
+    #     # if round(values[i], 6) == round(prevValue, 6):
+    #     if ((values[i] - prevValue) / prevValue) < .001:
+    #         count += 1
+    #         if count == 20:
+    #             values = values[:i+50]
+    #             labels = labels[:i+50]
+    #             break
+    #     prevValue = values[i]
+
+    values = values[:500]
+    labels = labels[:500]
+
 
     return render_template('details.html', title='Details', prior=prior,
                            bolo=bolo, labels=labels, values=values, barValues=barValues,
                            barLabels=barLabels, dummyIndex=dummyIndex, priorDict=priorDict)
+
+@app.errorhandler(404)
+def error_404(error):
+    return render_template('404.html'), 404
+
+
+
+@app.errorhandler(500)
+def error_500(error):
+    return render_template('500.html'), 500
+
 
 
 if __name__ == "__main__":
@@ -145,4 +175,4 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-# engine = create_engine('sqlite:///restaurants.sqlite3')
+# engine = create_engine('sqlite:///site.sqlite3')

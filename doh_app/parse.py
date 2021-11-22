@@ -9,13 +9,12 @@ from sqlalchemy.types import Integer, String, Float
 start = datetime.datetime.now()
 origin = datetime.datetime.now()
 
-df = pd.read_csv('C:/Users/a/Documents/Projects/doh_app/static/DOHMH_New_York_City_Restaurant_Inspection_Results (3).csv')
+df = pd.read_csv('./static/DOHMH_New_York_City_Restaurant_Inspection_Results (4).csv')
 
 df.columns = [x.lower() for x in df.columns]
 df.columns = [x.replace(' ','_') for x in df.columns]
 
 
-df = df[df['inspection_date']!='1900-01-01']
 df = df[(df['inspection_type'].str.contains('Cycle')) | 
 (df['inspection_type'].str.contains('Pre')) |
         (pd.isna(df['inspection_type']))]
@@ -24,9 +23,14 @@ df = df[['camis', 'dba', 'building', 'street', 'boro', 'inspection_date', 'actio
 
 df['inspection_date'] = df['inspection_date'].astype('datetime64[ns]')
 df['record_date'] = df['record_date'].astype('datetime64[ns]')
+df = df[df['inspection_date']!='1900-01-01']
 
 df['zipcode'] = df['zipcode'].astype(str).replace(r'\.0', '', regex=True)
 df['dba'] = df['dba'].astype(str).apply(lambda x: ' '.join(x.split()).title())
+
+df['dba'] = df['dba'].replace(r'(\'S)', "'s", regex=True)
+
+
 df['address'] = df['building'] + ' ' + df['street'] + ', ' + df['boro']
 df['address'] = df['address'].astype(str).apply(lambda x: ' '.join(x.split()).title())
 df['address'] = df['address'].str.replace('\s{2,}', ' ', regex=True)

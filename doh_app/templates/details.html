@@ -1,13 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<body>
+
     <h1>DOH Inspection Predictor thing report for {{ prior[0].dba }}</h1>
-    <div>
+    <div class="mt-5">
         <canvas id="lineChart" width="1200" height="400"></canvas>
     </div>
 
 
-    <div>
+    <div class="mt-5">
         <h3>Prior violations for {{ prior[0].dba }}:</h3>
         {% for inspection in priorDict %}
         <div>
@@ -24,10 +27,10 @@
     </div>
 
 
-    <div>
+    <div class="mt-5 mb-5">
         <canvas id="barChart" width="1200" height="400"></canvas>
     </div>
-    <script>
+<script>
 
 var ctx2 = document.getElementById("barChart").getContext('2d');
 var barChart = new Chart(ctx2, {
@@ -36,6 +39,8 @@ var barChart = new Chart(ctx2, {
         labels: {{ barLabels | safe }},
         datasets: [{
             label: "Highest Percentage Occurring Violations",
+            backgroundColor: '#00008b',
+            borderRadius: 7,
             data: {{ barValues | safe }},
                 }]
         },
@@ -43,7 +48,7 @@ var barChart = new Chart(ctx2, {
             scales: {
             x: {  
                 ticks: {
-                display: false
+                display: false,
                 }
             }
             },
@@ -53,14 +58,31 @@ var barChart = new Chart(ctx2, {
     </script>
     <script>
         var ctx = document.getElementById("lineChart").getContext("2d");
+
+        var gradientStroke = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientStroke.addColorStop(0, '#00008b');
+
+            gradientStroke.addColorStop(1, '#8b0000');
+
+
         var lineChart = new Chart(ctx, {
             type: "line",
             data: {
                 labels: {{ labels | safe }},
-        datasets: [
-            {
-                label: "Probability of survival before a given date",
-                data: {{ values | safe }}
+                    datasets: [{
+                    label: "Probability of survival before a given date",
+                    borderColor: gradientStroke,
+                    pointBorderColor: gradientStroke,
+                    pointBackgroundColor: gradientStroke,
+                    pointHoverBackgroundColor: gradientStroke,
+                    pointHoverBorderColor: gradientStroke,
+                    pointBorderWidth: 5,
+                    pointHoverRadius: 5,
+                    pointHoverBorderWidth: 1,
+                    pointRadius: 1,
+                    fill: false,
+                    borderWidth: 4,
+                    data: {{ values | safe }}
                     }
         ]
             },
@@ -69,4 +91,4 @@ var barChart = new Chart(ctx2, {
         }
         });
     </script>
-</body>
+{% endblock content %}
