@@ -6,3 +6,5 @@ Scripts/
 share/
 *.cfg
 site.db
+sandbox.ipynb
+update_db.py

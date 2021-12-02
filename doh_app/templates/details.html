@@ -5,7 +5,7 @@
 <h1>DOH Inspection Predictor Report for {{ prior[0].dba }}</h1>
 
 <h2>Your cumulative chance of death</h2>
-<div class="container">
+<div class="chart-container">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -56,7 +56,21 @@ var barChart = new Chart(ctx2, {
         labels: {{ barLabels | safe }},
         datasets: [{
             label: "Highest Percentage Occurring Violations",
-            backgroundColor: '#00008b',
+            backgroundColor: ["#eb2929",
+                                "#eb3f18",
+                                "#e85200",
+                                "#e56200",
+                                "#df7200",
+                                "#d88000",
+                                "#d08d00",
+                                "#c69a00",
+                                "#bba600",
+                                "#aeb200",
+                                "#9fbd00",
+                                "#8fc700",
+                                "#7bd107",
+                                "#63db33",
+                                "#3de44f"],
             borderRadius: 7,
             data: {{ barValues | safe }},
                 }]
@@ -73,6 +87,8 @@ var barChart = new Chart(ctx2, {
         }
     }); 
     </script>
+
+
     
     <script>
         var ctx = document.getElementById("lineChart").getContext("2d");

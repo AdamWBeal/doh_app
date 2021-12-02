@@ -5,11 +5,29 @@ import numpy as np
 import pickle
 from sqlalchemy import create_engine
 from sqlalchemy.types import Integer, String, Float
+import requests
+import datetime
 
 start = datetime.datetime.now()
 origin = datetime.datetime.now()
 
-df = pd.read_csv('./static/DOHMH_New_York_City_Restaurant_Inspection_Results (4).csv')
+dateToday = datetime.datetime.now().date()
+
+r = requests.get('https://data.cityofnewyork.us/api/views/43nn-pn8j/rows.csv?accessType=DOWNLOAD')
+
+url_content = r.content
+csv_file = open('./static/{}.csv'.format(dateToday), 'wb')
+
+csv_file.write(url_content)
+csv_file.close()
+del(r)
+
+end = datetime.datetime.now() - start
+print('finished csv get in {}'.format(end))
+
+start = datetime.datetime.now()
+
+df = pd.read_csv('./static/{}.csv'.format(dateToday))
 
 df.columns = [x.lower() for x in df.columns]
 df.columns = [x.replace(' ','_') for x in df.columns]
