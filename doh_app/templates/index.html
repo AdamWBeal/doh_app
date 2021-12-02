@@ -1,16 +1,55 @@
 {% extends "layout.html" %}
 {% block content %}
-<h3>Welcome to my website</h3>
+<h1>Welcome to the NYC Department of Health Restaurant Inspection Primer</h1>
 <div>
-    <p>The purpose of this website is to aid NYC restaurant's in navigating the city's Department of Health inspection process.
-        Type in any food service establishment to see relevant information to keep your customers safe and your bills low.  Thanks for stopping by.
+    <p>The purpose of this website is to aid NYC restaurant's in navigating the city's Department of Health inspection
+        process.
+        Type in any food service establishment to see relevant information to keep your customers safe and your bills
+        low. Thanks for stopping by.
     </p>
 </div>
 <form action="#" method="post">
     <div class="form-group">
-    <p><input type="text" class="form-control" name="query" placeholder="Enter NYC restaurant"/></p>
-    <p><input type="submit" value="submit" /></p>
-</div>
+        <p><input type="text" class="form-control" name="query" placeholder="Enter NYC restaurant" /></p>
+        <p><input type="submit" value="submit" /></p>
+    </div>
 </form>
+<div>
+    <h2>Why did you make this?</h2>
+    <p> I conceived the original seed for this project while managing a busy bakery café in Tribeca, Manhattan. In
+        addition to balancing extortionist rent, constantly shifting staff and the million other things that go into
+        managing a restaurant there was always the spectre of the surprise health inspection from the NYC Department of
+        Health and Mental Hygiene, whose fines can potentially reach into the thousands of dollars. If the inspections
+        were inevitable, how could I use the open source data on provided by the city <a
+            href="https://bit.ly/3I8zsqO" target="_blank" rel="noopener noreferrer">(https://bit.ly/3I8zsqO)</a> to give
+        me any advantage? Skip ahead a few years and I pursued the same question as my capstone project for General
+        Assembly’s data science immersive program. This web app is the result of this effort. The intended end user here
+        is an NYC restaurant stakeholder who wishes to have just a little bit more information to help them navigate the
+        inspection process.
+    </p>
+    <h2>What is this web app trying to tell me?</h2>
+    <p>
+        The line chart represents the conditional probability of “surviving” until at least until the given time. Put
+        another way, at that same given time only X% of the population has not been inspected yet. Using this you can
+        (hopefully) make a more informed plan for your inspection.
+        The next segment shows the all the selected restaurant’s prior (and upheld) violations. This can serve as a
+        refresher on which issues to address first when an inspection is on the horizon. There is no need to repeat the
+        same mistakes.
+        The final section gives the user a baseline of their particular time and place. It shows the top 15 violations
+        within roughly a half mile radius and occurring in the current month.
+    </p>
+    <h2>A word on COVID</h2>
+    <p>From March 17, 2020 to July 23, 2021 the DOH suspended random inspections. This has profound implications
+        regarding the ability of the model to forecast with confidence. In fact, less than 20% of New York restaurants
+        (as of November 2021) have had a “post-covid” inspection. Due to the nature of the underlying model and its
+        assumptions the timing prediction will not prove particularly useful in the short to medium term. What also
+        remains to be seen is how and whether the DOHMH is able to simultaneously catch up with the covid backlog as
+        well as fulfil their mandate to conduct regular inspections according to DOH policy. In any regard, assuming the
+        DOH doesn’t change their currently open source reporting method over the next couple of years the model should
+        regain some predictive value, and if your restaurant in question has had a recent inspection the model will
+        hopefully reflect a return to normal policies and timings. Furthermore, I will from time to time revisit the
+        assumptions made regarding manipulation of the raw data and model assumptions to see if there’s a better way to
+        account for the disruption COVID caused.</p>
+</div>
 
 {% endblock %}

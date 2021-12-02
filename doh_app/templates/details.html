@@ -2,34 +2,51 @@
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<h1>DOH Inspection Predictor Report for {{ prior[0].dba }}</h1>
 
-
-    <h1>DOH Inspection Predictor Report for {{ prior[0].dba }}</h1>
-    <div class="mt-5">
-        <canvas id="lineChart" width="1200" height="400"></canvas>
-    </div>
-
-
-    <div class="mt-5">
-        <h3>Prior violations for {{ prior[0].dba }}:</h3>
-        {% for inspection in priorDict %}
-        <div>
-            <ul>
-                <li>{{ inspection[:10] }}</li>
-                <ul>
-                {% for j in priorDict[inspection] %}
-                    <li>{{ j }}</li>
-                {% endfor %}
-                </ul>
-            </ul>
+<h2>Your cumulative chance of death</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
         </div>
-        {% endfor %}
     </div>
+</div>
 
 
-    <div class="mt-5 mb-5">
-        <canvas id="barChart" width="1200" height="400"></canvas>
+<div class="mt-5">
+    <h2>Prior violations for {{ prior[0].dba }}:</h2>
+    {% for inspection in priorDict %}
+    <div>
+        <ul>
+            <li>{{ inspection[:10] }}</li>
+            <ul>
+                {% for j in priorDict[inspection] %}
+                <li>{{ j }}</li>
+                {% endfor %}
+            </ul>
+        </ul>
     </div>
+    {% endfor %}
+</div>
+
+<h2>Most commonly occuring violations in other restaurants near {{ prior[0].dba }} around this time of year.</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
 var ctx2 = document.getElementById("barChart").getContext('2d');
@@ -56,21 +73,21 @@ var barChart = new Chart(ctx2, {
         }
     }); 
     </script>
+    
     <script>
         var ctx = document.getElementById("lineChart").getContext("2d");
 
         var gradientStroke = ctx.createLinearGradient(0, 0, 0, 400);
-            gradientStroke.addColorStop(0, '#00008b');
+            gradientStroke.addColorStop(0, '#f44336');
 
-            gradientStroke.addColorStop(1, '#8b0000');
+            gradientStroke.addColorStop(1, '#61FF33');
 
-
-        var lineChart = new Chart(ctx, {
+         var lineChart = new Chart(ctx, {
             type: "line",
             data: {
                 labels: {{ labels | safe }},
                     datasets: [{
-                    label: "Probability of survival before a given date",
+                    label: "Probability of death",
                     borderColor: gradientStroke,
                     pointBorderColor: gradientStroke,
                     pointBackgroundColor: gradientStroke,
@@ -83,12 +100,17 @@ var barChart = new Chart(ctx2, {
                     fill: false,
                     borderWidth: 4,
                     data: {{ values | safe }}
-                    }
-        ]
-            },
-        options: {
-            responsive: true
+                    }]
+                },
+            options: {
+                responsive: true,
+                scales: {
+                y: {
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
+            }
         }
-        });
+    });
     </script>
 {% endblock content %}

@@ -133,26 +133,16 @@ def details(camis):
     model = model.set_index('days')
 
     values = list(model.iloc[:, 0])
+    values = [1 - x for x in values]
     values = [100*x for x in values]
 
 
     labels = list(model.index.astype(str))
     labels = [x[:10] for x in labels]
 
-    # prevValue = 1.0
-    # count = 0
-    # for i in range(len(values)):
-    #     # if round(values[i], 6) == round(prevValue, 6):
-    #     if ((values[i] - prevValue) / prevValue) < .001:
-    #         count += 1
-    #         if count == 20:
-    #             values = values[:i+50]
-    #             labels = labels[:i+50]
-    #             break
-    #     prevValue = values[i]
 
-    values = values[:500]
-    labels = labels[:500]
+    values = values[:450]
+    labels = labels[:450]
 
 
     return render_template('details.html', title='Details', prior=prior,

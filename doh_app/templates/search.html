@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<h1>Please select the restaurant you were searching for</h1>
+<div class="container">
 <ul class="list-group">
-{% for rest in rests %}
-<div>
-    <a href="{{ url_for('details', camis=rest.camis)}}"><li class="list-group-item list-group-item-action" >{{ rest.dba }} - {{ rest.address }}</li></a>
+    {% for rest in rests %}
+        <a href="{{ url_for('details', camis=rest.camis)}}">
+            <li class="list-group-item list-group-item-action">{{ rest.dba }} - {{ rest.address }}</li>
+        </a>
+        {% endfor %}
+    </ul>
 </div>
-{% endfor %}
-</ul>
+
 {% endblock content %}
