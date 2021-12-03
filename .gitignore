@@ -7,3 +7,4 @@ share/
 *.cfg
 sandbox.ipynb
 update_db.py
+site.db
