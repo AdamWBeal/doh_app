@@ -166,4 +166,3 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
-# engine = create_engine('sqlite:///site.sqlite3')
