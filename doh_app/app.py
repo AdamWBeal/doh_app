@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, render_template, request, flash
 from flask_sqlalchemy import SQLAlchemy
+import flask_sqlalchemy
 from sqlalchemy import create_engine
 import pickle
 import datetime
@@ -40,27 +41,39 @@ class Arguments(db.Model):
     event = db.Column(db.Integer)
 
 
-@app.route("/", methods=["POST", 'GET'])
+@app.route("/")
 def home():
+    return render_template('index.html', title='Home')
+
+
+@app.route("/DOHinspections", methods=["POST", 'GET'])
+def doh():
     if request.method == "POST":
         query = request.form['query']
         query = query.lower()
         query = re.sub('[^a-zA-Z0-9 ]', '', query)
         return redirect(url_for('search', query=query))
-    return render_template('index.html', title='Home')
+    return render_template('doh.html', title='DOH Inspections')
 
 
-@app.route("/search/<query>")
+@app.route("/DOHinspections/search/<query>")
 def search(query):
+    # PUT PROTECTIONS IN HERE!
+    query = query.lower()
+    query = re.sub('[^a-zA-Z0-9 ]', '', query)
+    print(query)
+    if query == '':
+        flash(f'Please enter a valid search', 'failure')
+        return redirect(url_for('doh'))
     result = db.session.query(Restaurants.dba, Restaurants.address, Restaurants.camis).filter(
         Restaurants.small.like('%{}%'.format(query))).distinct().limit(50).all()
     if len(result) == 0:
         flash(f'No valid places with that search.  Try again.', 'failure')
-        return redirect(url_for('home'))
+        return redirect(url_for('doh'))
     return render_template('search.html', title='Search', rests=result)
 
 
-@app.route("/details/<int:camis>")
+@app.route("/DOHinspections/details/<int:camis>")
 def details(camis):
     prior = Restaurants.query.filter_by(camis=camis)
     prior = prior[::-1]

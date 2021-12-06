@@ -4,8 +4,8 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <h1>DOH Inspection Predictor Report for {{ prior[0].dba }}</h1>
 
-<h2>Your cumulative chance of death</h2>
-<div class="chart-container">
+<h2>Cumulative chance of inspection before a given date</h2>
+<div class="container">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -103,7 +103,7 @@ var barChart = new Chart(ctx2, {
             data: {
                 labels: {{ labels | safe }},
                     datasets: [{
-                    label: "Probability of death",
+                    label: "Probability of inspection",
                     borderColor: gradientStroke,
                     pointBorderColor: gradientStroke,
                     pointBackgroundColor: gradientStroke,
