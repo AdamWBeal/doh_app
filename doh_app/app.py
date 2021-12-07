@@ -58,7 +58,6 @@ def doh():
 
 @app.route("/DOHinspections/search/<query>")
 def search(query):
-    # PUT PROTECTIONS IN HERE!
     query = query.lower()
     query = re.sub('[^a-zA-Z0-9 ]', '', query)
     print(query)
