@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
 <h1>Adam's Homepage</h1>
-<div>
-    <div><img src="{{url_for('static', filename='50526.jpeg')}}" align='left' /></div>
-    <p>Here's text
-    </p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+        <img src="{{url_for('static', filename='50526.jpeg')}}" class="img-circle"/>
+    </div>
 </div>
+
+
 
 {% endblock %}

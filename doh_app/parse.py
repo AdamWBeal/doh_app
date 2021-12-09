@@ -16,7 +16,7 @@ dateToday = datetime.datetime.now().date()
 r = requests.get('https://data.cityofnewyork.us/api/views/43nn-pn8j/rows.csv?accessType=DOWNLOAD')
 
 url_content = r.content
-csv_file = open('./static/{}.csv'.format(dateToday), 'wb')
+csv_file = open('./static/archive/{}.csv'.format(dateToday), 'wb')
 
 csv_file.write(url_content)
 csv_file.close()
@@ -27,7 +27,7 @@ print('finished csv get in {}'.format(end))
 
 start = datetime.datetime.now()
 
-df = pd.read_csv('./static/{}.csv'.format(dateToday))
+df = pd.read_csv('./static/archive/{}.csv'.format(dateToday))
 
 df.columns = [x.lower() for x in df.columns]
 df.columns = [x.replace(' ','_') for x in df.columns]

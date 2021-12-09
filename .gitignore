@@ -9,3 +9,5 @@ sandbox.ipynb
 update_db.py
 site.db
 *.sav
+*.db
+doh_app/site.db

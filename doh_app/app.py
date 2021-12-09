@@ -45,7 +45,6 @@ class Arguments(db.Model):
 def home():
     return render_template('index.html', title='Home')
 
-
 @app.route("/DOHinspections", methods=["POST", 'GET'])
 def doh():
     if request.method == "POST":
@@ -55,13 +54,11 @@ def doh():
         return redirect(url_for('search', query=query))
     return render_template('doh.html', title='DOH Inspections')
 
-
 @app.route("/DOHinspections/search/<query>")
 def search(query):
     query = query.lower()
     query = re.sub('[^a-zA-Z0-9 ]', '', query)
-    print(query)
-    if query == '':
+    if not query:
         flash(f'Please enter a valid search', 'failure')
         return redirect(url_for('doh'))
     result = db.session.query(Restaurants.dba, Restaurants.address, Restaurants.camis).filter(
@@ -70,7 +67,6 @@ def search(query):
         flash(f'No valid places with that search.  Try again.', 'failure')
         return redirect(url_for('doh'))
     return render_template('search.html', title='Search', rests=result)
-
 
 @app.route("/DOHinspections/details/<int:camis>")
 def details(camis):
@@ -85,8 +81,8 @@ def details(camis):
         priorDict[i.inspection_date].append(i.violation_description)
 
     lat, lon = prior[0].latitude, prior[0].longitude
-    latTolerance = .012837
-    lonTolerance = .016154
+    latTolerance = .013837
+    lonTolerance = .017154
 
     highLat = lat + (latTolerance / 2)
     lowLat = lat - ( latTolerance / 2)
@@ -125,10 +121,6 @@ def details(camis):
         barValues = barValues[:15]
         barLabels = barLabels[:15]
 
-    dummyIndex = list(range(1, len(barValues) + 1))
-
-
-
 # load the pickled model and run it
 
     loaded_model = pickle.load(open('./static/todays_model.sav', 'rb'))
@@ -148,30 +140,23 @@ def details(camis):
     values = [1 - x for x in values]
     values = [100*x for x in values]
 
-
     labels = list(model.index.astype(str))
     labels = [x[:10] for x in labels]
-
 
     values = values[:450]
     labels = labels[:450]
 
-
     return render_template('details.html', title='Details', prior=prior,
                            bolo=bolo, labels=labels, values=values, barValues=barValues,
-                           barLabels=barLabels, dummyIndex=dummyIndex, priorDict=priorDict)
+                           barLabels=barLabels, priorDict=priorDict)
 
 @app.errorhandler(404)
 def error_404(error):
     return render_template('404.html'), 404
 
-
-
 @app.errorhandler(500)
 def error_500(error):
     return render_template('500.html'), 500
-
-
 
 if __name__ == "__main__":
     db.create_all()

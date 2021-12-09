@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
-
 {% block content %}
 <h1>Please select the restaurant you were searching for</h1>
-<div class="container">
-<ul class="list-group">
-    {% for rest in rests %}
-        <a href="{{ url_for('details', camis=rest.camis)}}">
-            <li class="list-group-item list-group-item-action">{{ rest.dba }} - {{ rest.address }}</li>
+<div class="m-4">
+    <div class="list-group">
+        {% for rest in rests %}
+        <a href="{{ url_for('details', camis=rest.camis) }}" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+                <h4>{{ rest.dba }}</h4>
+            </div>
+            <p>{{ rest.address }}</p>
         </a>
         {% endfor %}
-    </ul>
+    </div>
 </div>
 {% endblock content %}
